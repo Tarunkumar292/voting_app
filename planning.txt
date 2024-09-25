@@ -1,0 +1,39 @@
+voting application
+---------------------------------------------------------
+models 
+routes
+---------------------------------------------------------
+functionality
+1. user sign in
+2. user sign up
+3. see the list of candidate
+4. vote one of the candidate/user can't vote again
+5. see the voting status sorting candidate 
+6. data must be unique using id :aadhar
+7. list of candidate for admin and can't vote 
+8. user can change their password
+9. user can login using aadhar username and password
+
+-------------------------------------------------------------
+### routes
+
+user authentication:
+/login: post - existing user
+/Signup: post- user can make their account
+
+voting:
+get: /candidates - list of candidates
+post: /vote/:candidateid - vote for a candidate
+
+voter counts:
+get:/vote/counts the list of candidate sorting acc. to voting status / vote counts
+
+user profile:
+get: /profile - user profile details
+put:/profile/password - user change the password
+
+Admin candidate Management:
+/candidate:post-create new candidate
+/candidate:put-update any candidate
+/candidate:delete-remove any candidate
+
