@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Vote Status</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 50px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+    </style>
+</head>
+<body>
+
+<h2>Current Voting Status</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Party</th>
+            <th>Vote Count</th>
+        </tr>
+    </thead>
+    <tbody id="statusTable"></tbody>
+</table>
+
+<script>
+    async function getVoteStatus() {
+        const response = await fetch('/candidate/vote/count');
+        const statusData = await response.json();
+
+        const statusTable = document.getElementById('statusTable');
+        statusTable.innerHTML = ''; // Clear before rendering
+
+        statusData.forEach(candidate => {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${candidate.party}</td><td>${candidate.voteCount}</td>`;
+            statusTable.appendChild(row);
+        });
+    }
+
+    // Fetch vote status on page load
+    getVoteStatus();
+</script>
+
+</body>
+</html>

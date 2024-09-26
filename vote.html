@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 50px; }
+        .candidate { padding: 15px; background: white; margin-bottom: 10px; }
+        button { padding: 10px 20px; background-color: #28a745; border: none; color: white; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<h2>Vote for a Candidate</h2>
+<div id="candidates"></div>
+
+<script>
+    async function getCandidates() {
+        const response = await fetch('/candidate');
+        const candidates = await response.json();
+        
+        const candidatesDiv = document.getElementById('candidates');
+        candidatesDiv.innerHTML = ''; // Clear before rendering
+
+        candidates.forEach(candidate => {
+            const div = document.createElement('div');
+            div.classList.add('candidate');
+            div.innerHTML = `
+                <h3>${candidate.name} (${candidate.party})</h3>
+                <button onclick="vote('${candidate._id}')">Vote</button>
+            `;
+            candidatesDiv.appendChild(div);
+        });
+    }
+
+    async function vote(candidateId) {
+        const response = await fetch(`/candidate/vote/${candidateId}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+            alert('Vote recorded successfully');
+        } else {
+            alert(data.message || 'Failed to vote');
+        }
+    }
+
+    // Fetch candidates on page load
+    getCandidates();
+</script>
+
+</body>
+</html>
